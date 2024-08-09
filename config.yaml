@@ -1,0 +1,24 @@
+
+log_level: INFO
+
+mqtt:
+  address: "192.168.1.11"
+  port: 30000
+  repeat_time: 10
+
+  main_topic: modbus-to-mqtt # m2m
+
+fieldbus:
+  address: "192.168.1.12"
+
+  read:
+  - type: coil
+    start: 0
+    count: 1
+
+  scan_time: 80
+  long_press_time: 1000
+
+
+
+
