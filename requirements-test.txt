@@ -1,0 +1,3 @@
+types-PyYAML
+black
+mypy
