@@ -9,5 +9,6 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: List files in the repository
-        run: |
-          ls ${{ gitea.workspace }}
+        run: ls ${{ gitea.workspace }}
+      - name: Build docker image
+        run: docker build -t modbus-to-mqtt ${{ gitea.workspace }}
