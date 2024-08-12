@@ -20,8 +20,6 @@ jobs:
         run: docker image ls
 
       - name: Remove docker images
-        if: always()
         uses: docker image rm modbus-to-mqtt-${{ github.run_number }} modbus-to-mqtt-test-${{ github.run_number }}
       - name: List images 3
-        if: always()
         run: docker image ls
