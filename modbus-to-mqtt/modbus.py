@@ -30,7 +30,9 @@ class MqttPublisher:
             self._mqtt.publish(f"{self._main_topic}/status", json.dumps(self._status))
             logging.debug(f"Message send: {json.dumps(self._status)}.")
 
-    def update_status(self, message: dict[str, str | int | bool], log: bool = True) -> None:
+    def update_status(
+        self, message: dict[str, str | int | bool], log: bool = True
+    ) -> None:
         if log:
             logging.info(f"Status changed: {json.dumps(message)}.")
         self._status.update(message)
