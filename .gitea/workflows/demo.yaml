@@ -19,6 +19,6 @@ jobs:
       - name: List images 2
         run: docker image ls
       - name: Remove docker images
-        uses: docker image rm modbus-to-mqtt-${{ github.run_number }} modbus-to-mqtt-test-${{ github.run_number }}
+        run: docker image rm modbus-to-mqtt-${{ github.run_number }} modbus-to-mqtt-test-${{ github.run_number }}
       - name: List images 3
         run: docker image ls
