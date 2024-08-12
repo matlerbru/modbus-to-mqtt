@@ -3,18 +3,23 @@ run-name: ${{ gitea.actor }} is testing out Gitea Actions 🚀
 on: [push]
 
 jobs:
-  Explore-Gitea-Actions:
+  Build-docker-images:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: List files in the repository
         run: ls ${{ gitea.workspace }}
-      - name: List images 2
+      - name: List images
         run: docker image ls
       - name: Build docker image
         run: |
-          docker build -t modbus-to-mqtt --target base ${{ gitea.workspace }} && \
-          docker build -t modbus-to-mqtt --target test ${{ gitea.workspace }} 
+          docker build -t modbus-to-mqtt-${{ github.run_number }} --target base ${{ gitea.workspace }} && \
+          docker build -t modbus-to-mqtt-test-${{ github.run_number }} --target test ${{ gitea.workspace }} 
       - name: List images 2
         run: docker image ls
+
+  Clean-docker-images:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "test123"
