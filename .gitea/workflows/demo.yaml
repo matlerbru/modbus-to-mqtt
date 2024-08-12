@@ -14,7 +14,7 @@ jobs:
         run: docker image ls
       - name: Build docker image
         run: |
-          docker build -t modbus-to-mqtt --target base ${{ gitea.workspace }} && \\
+          docker build -t modbus-to-mqtt --target base ${{ gitea.workspace }} && \
           docker build -t modbus-to-mqtt --target test ${{ gitea.workspace }} 
       - name: List images 2
         run: docker image ls
