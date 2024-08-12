@@ -22,4 +22,7 @@ jobs:
   Clean-docker-images:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "test123"
+      - name: Remove docker images
+        uses: docker image rm modbus-to-mqtt-${{ github.run_number }} modbus-to-mqtt-test-${{ github.run_number }}
+      - name: List images
+        run: docker image ls
