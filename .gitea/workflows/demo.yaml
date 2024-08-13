@@ -14,8 +14,8 @@ jobs:
         run: docker image ls
       - name: Build docker images
         run: |
-          docker build -t modbus-to-mqtt-${{ github.run_number }} --target base ${{ gitea.workspace }} && \
-          docker build -t modbus-to-mqtt-test-${{ github.run_number }} --target test ${{ gitea.workspace }} 
+          docker build -t modbus-to-mqtt-${{ github.run_number }} --target base ${{ gitea.workspace }} --no-cache && \
+          docker build -t modbus-to-mqtt-test-${{ github.run_number }} --target test ${{ gitea.workspace }} --no-cache 
       - name: List images 2
         run: docker image ls
       - name: Black syntax test
