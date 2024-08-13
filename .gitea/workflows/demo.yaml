@@ -19,7 +19,7 @@ jobs:
       - name: List images 2
         run: docker image ls
       - name: Black syntax test
-        run: docker run --entrypoint "python -m black . --check" modbus-to-mqtt-test-${{ github.run_number }}
+        run: docker run modbus-to-mqtt-test-${{ github.run_number }} "python -m black . --check"
       - name: Remove docker images
         run: docker image rm modbus-to-mqtt-${{ github.run_number }} modbus-to-mqtt-test-${{ github.run_number }}
       - name: List images 3
