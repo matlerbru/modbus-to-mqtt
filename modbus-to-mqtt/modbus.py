@@ -75,7 +75,11 @@ class Coil:
                 )
 
             if not self._started:
-                logging.info(f"Module is polling.")
+                logging.info(f"Module is polling.")sdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasda
+
+
+
+
                 self._started = True
 
             val = [(1 if n else 0) for n in data]
