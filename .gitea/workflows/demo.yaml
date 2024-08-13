@@ -19,9 +19,12 @@ jobs:
       - name: Mypy type test
         run: docker run modbus-to-mqtt-test-${{ github.run_number }} python3 -m mypy .
 
-      - name: Remove docker images
-        run: docker image rm modbus-to-mqtt-${{ github.run_number }} modbus-to-mqtt-test-${{ github.run_number }} --force
+      - name: Remove test image
+        run: docker image rm modbus-to-mqtt-test-${{ github.run_number }} --force
         if: always()
+      - name: Remove image
+        run: docker image rm modbus-to-mqtt-${{ github.run_number }} --force
+        if: gitea.ref != 'refs/heads/main'
 
   Release-image:
     runs-on: ubuntu-latest
@@ -30,3 +33,6 @@ jobs:
     steps:
       - name: test
         uses: echo "123"
+      - name: Remove image
+        run: docker image rm modbus-to-mqtt-${{ github.run_number }} --force
+        if: always()
