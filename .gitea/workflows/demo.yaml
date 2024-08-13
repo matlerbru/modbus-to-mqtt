@@ -29,3 +29,12 @@ jobs:
       - name: List images 3
         run: docker image ls
         if: always()
+
+  Release-image:
+    branch: ["main"]
+    needs: ["Build-docker-images"]
+    steps:
+      - name: test
+        uses: echo 123
+
+
