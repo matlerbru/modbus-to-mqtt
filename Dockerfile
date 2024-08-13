@@ -11,3 +11,5 @@ FROM base AS test
 
 COPY requirements-test.txt /usr
 RUN pip install --no-cache-dir -r /usr/requirements-test.txt
+
+COPY mypy.ini .
