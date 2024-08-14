@@ -36,7 +36,7 @@ jobs:
       - name: get image id
         run: docker image ls |grep modbus-to-mqtt-${{ github.run_number }} | awk '{print $3}'
       - name: Tag docker image
-        run: docker tag $(docker image ls |grep modbus-to-mqtt-${{ github.run_number }} | awk '{print $3}') gitea.nuc/mlb/modbus-to-mqtt
+        run: docker tag $(docker image ls |grep modbus-to-mqtt-${{ github.run_number }} | awk '{print $3}') git.nuc/mlb/modbus-to-mqtt
       - name: List docker images
         run: docker image ls
       - name: Push docker image to registry
