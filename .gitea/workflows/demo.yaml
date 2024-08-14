@@ -35,8 +35,10 @@ jobs:
         run: docker image ls
       - name: Tag docker image
         run: docker tag $(docker image ls |grep modbus-to-mqtt | awk '{print $3}') gitea.nuc/mlb/modbus-to-mqtt
-  #    - name: Push docker image to registry
-  #      run: 
+        run: docker image ls 2
+      - name: Tag docker image
+      - name: Push docker image to registry
+        run: docker push gitea.nuc/mlb/modbus-to-mqtt
       - name: Remove image
         run: docker image rm modbus-to-mqtt-${{ github.run_number }} --force
         if: always()
