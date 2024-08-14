@@ -40,11 +40,11 @@ jobs:
       - name: List docker images
         run: docker image ls
       - name: Push docker image to registry
-        run: docker push gitea.nuc/mlb/modbus-to-mqtt
+        run: docker push git.nuc/mlb/modbus-to-mqtt
 
       -
       - name: Remove images
-        run: docker image rm modbus-to-mqtt-${{ github.run_number }} gitea.nuc/mlb/modbus-to-mqtt --force
+        run: docker image rm modbus-to-mqtt-${{ github.run_number }} gitd.nuc/mlb/modbus-to-mqtt --force
         if: always()
       - name: Remove image
         run: docker image rm modbus-to-mqtt --force
