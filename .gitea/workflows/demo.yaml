@@ -22,14 +22,14 @@ jobs:
       - name: Remove test image
         run: docker image rm modbus-to-mqtt-test-${{ github.run_number }} --force
         if: always()
-      - name: Remove image
-        run: docker image rm modbus-to-mqtt-${{ github.run_number }} --force
-        if: gitea.ref != 'refs/heads/main'
+  #    - name: Remove image
+  #      run: docker image rm modbus-to-mqtt-${{ github.run_number }} --force
+  #      if: gitea.ref != 'refs/heads/main'
 
   Release-image:
     runs-on: ubuntu-latest
     needs: ["Build-docker-images"]
-    if: gitea.ref == 'refs/heads/main'
+  #   if: gitea.ref == 'refs/heads/main'
     steps:
       - name: List docker images
         run: docker image ls
