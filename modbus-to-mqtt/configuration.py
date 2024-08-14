@@ -58,6 +58,5 @@ elif os.path.isfile("/modbus-to-mqtt/config.yaml"):
 
         except yaml.YAMLError:
             pass
-
-if config is None:
+else:
     raise NoConfigurationError

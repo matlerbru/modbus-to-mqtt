@@ -16,7 +16,7 @@ class MqttPublisher:
     def __init__(self) -> None:
         self._mqtt = mqtt.Mqtt()
         self._mqtt.connect()
-        self._status: dict[str, str | int] = {}
+        self._status: dict[str, str | int | float] = {}
         self._main_topic = config.mqtt.main_topic
 
         self._thread_resend_status()
@@ -30,7 +30,9 @@ class MqttPublisher:
             self._mqtt.publish(f"{self._main_topic}/status", json.dumps(self._status))
             logging.debug(f"Message send: {json.dumps(self._status)}.")
 
-    def update_status(self, message: dict[str, str | int | bool], log: bool = True) -> None:
+    def update_status(
+        self, message: dict[str, str | int | bool | float], log: bool = True
+    ) -> None:
         if log:
             logging.info(f"Status changed: {json.dumps(message)}.")
         self._status.update(message)

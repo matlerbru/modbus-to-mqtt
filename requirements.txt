@@ -1,7 +1,4 @@
 paho-mqtt
 pyModbusTCP
 PyYAML
-types-PyYAML
 pydantic
-black
-mypy
