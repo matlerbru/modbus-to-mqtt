@@ -43,20 +43,21 @@ class Config(pydantic.BaseModel):
     mqtt: Mqtt
     fieldbus: Fieldbus
 
-
 if os.path.isfile("config.yaml"):
     with open("config.yaml", "r") as stream:
         parsed_yaml = typing.cast(dict, yaml.safe_load(stream))
-        config = Config.model_validate(parsed_yaml)
+        conf = Config.model_validate(parsed_yaml)
 
 elif os.path.isfile("/modbus-to-mqtt/config.yaml"):
 
     with open("/modbus-to-mqtt/config.yaml", "r") as venv_stream:
         try:
             parsed_yaml = typing.cast(dict, yaml.safe_load(venv_stream))
-            config = Config.model_validate(parsed_yaml)
+            conf = Config.model_validate(parsed_yaml)
 
         except yaml.YAMLError:
             pass
 else:
     raise NoConfigurationError
+
+config = conf
