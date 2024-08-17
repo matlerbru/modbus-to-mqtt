@@ -43,6 +43,7 @@ class Config(pydantic.BaseModel):
     mqtt: Mqtt
     fieldbus: Fieldbus
 
+
 if os.path.isfile("config.yaml"):
     with open("config.yaml", "r") as stream:
         parsed_yaml = typing.cast(dict, yaml.safe_load(stream))
