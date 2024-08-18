@@ -32,8 +32,6 @@ def main() -> None:
 
 if __name__ == "__main__":
     try:
-
-        LOGNAME = "modbus-to-mqtt.log"
         main()
     except KeyboardInterrupt:
         pass
