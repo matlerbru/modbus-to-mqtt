@@ -80,8 +80,6 @@ class Coil:
 
             val = [(1 if n else 0) for n in data]
 
-            val = [1]
-
             self.previous_values.append(val)
             for index in range(len(data)):
                 previous_values = "".join(
