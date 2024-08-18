@@ -3,6 +3,7 @@ import yaml
 import pydantic
 import enum
 import typing
+import logging
 
 
 class NoConfigurationError(BaseException):
@@ -44,21 +45,16 @@ class Config(pydantic.BaseModel):
     fieldbus: Fieldbus
 
 
-if os.path.isfile("config.yaml"):
-    with open("config.yaml", "r") as stream:
-        parsed_yaml = typing.cast(dict, yaml.safe_load(stream))
-        conf = Config.model_validate(parsed_yaml)
-
-elif os.path.isfile("/modbus-to-mqtt/config.yaml"):
-
-    with open("/modbus-to-mqtt/config.yaml", "r") as venv_stream:
+def config_loader(paths: list[str]) -> Config:
+    for path in paths:
         try:
-            parsed_yaml = typing.cast(dict, yaml.safe_load(venv_stream))
-            conf = Config.model_validate(parsed_yaml)
+            with open(path, "r") as stream:
+                parsed_yaml = typing.cast(dict, yaml.safe_load(stream))
+                return Config.model_validate(parsed_yaml)
+        except Exception as e:
+            logging.error(e)
+    else:
+        raise Exception("No config.yaml file found.")
 
-        except yaml.YAMLError:
-            pass
-else:
-    raise NoConfigurationError
 
-config = conf
+config = config_loader(["config.yaml", "/modbus-to-mqtt/config.yaml"])
