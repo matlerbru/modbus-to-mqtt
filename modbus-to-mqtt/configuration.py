@@ -5,6 +5,7 @@ import enum
 import typing
 import logging
 
+
 class NoConfigurationError(BaseException):
     pass
 
@@ -43,6 +44,7 @@ class Config(pydantic.BaseModel):
     mqtt: Mqtt
     fieldbus: Fieldbus
 
+
 def config_loader(paths: list[str]) -> Config:
     for path in paths:
         try:
@@ -53,4 +55,6 @@ def config_loader(paths: list[str]) -> Config:
             logging.error(e)
     else:
         raise Exception("No config.yaml file found.")
+
+
 config = config_loader(["config.yaml", "/modbus-to-mqtt/config.yaml"])
