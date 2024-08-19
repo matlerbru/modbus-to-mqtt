@@ -53,7 +53,7 @@ def config_loader(paths: list[str]) -> Config:
                 return Config.model_validate(parsed_yaml)
         except yaml.scanner.ScannerError as e:
             logging.error(f"Unable to parse file {path}: {str(e)}.")
-        except yaml.scanner.ScannerError:
+        except FileNotFoundError:
             pass
     else:
         raise Exception("Not able to load configfile.")
