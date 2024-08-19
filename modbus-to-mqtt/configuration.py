@@ -1,4 +1,3 @@
-import os
 import yaml
 import pydantic
 import enum
@@ -50,11 +49,14 @@ def config_loader(paths: list[str]) -> Config:
         try:
             with open(path, "r") as stream:
                 parsed_yaml = typing.cast(dict, yaml.safe_load(stream))
+                logging.info(f"Loading configfile: {path}")
                 return Config.model_validate(parsed_yaml)
-        except Exception as e:
-            logging.error(e)
+        except yaml.scanner.ScannerError as e:
+            logging.error(f"Unable to parse file {path}: {str(e)}.")
+        except yaml.scanner.ScannerError:
+            pass
     else:
-        raise Exception("No config.yaml file found.")
+        raise Exception("Not able to load configfile.")
 
 
 config = config_loader(["config.yaml", "/modbus-to-mqtt/config.yaml"])

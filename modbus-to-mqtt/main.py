@@ -1,6 +1,5 @@
 import logging
 import time
-
 import sys
 from configuration import config
 import modbus

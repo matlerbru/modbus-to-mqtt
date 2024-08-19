@@ -23,7 +23,7 @@ class MqttPublisher:
 
     def _thread_resend_status(self) -> None:
         threading.Timer(
-            (config.mqtt.repeat_time / 60) / 1000, self._thread_resend_status
+            config.mqtt.repeat_time / 60, self._thread_resend_status
         ).start()
         if len(self._status) > 0:
             logging.debug(f"Sending message: {json.dumps(self._status)}.")
