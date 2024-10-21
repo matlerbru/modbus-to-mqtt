@@ -24,12 +24,12 @@ jobs:
         if: always()
       - name: Remove image
         run: docker image rm modbus-to-mqtt-${{ github.run_number }} --force
-        if: github.ref != 'refs/heads/master'
+        if: github.ref != 'refs/heads/main'
 
   Release-image:
     runs-on: ubuntu-latest
     needs: ["Build-docker-images"]
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Tag docker image
         run: docker tag $(docker image ls |grep modbus-to-mqtt-${{ github.run_number }} | awk '{print $3}') github.priv/mlb/modbus-to-mqtt
