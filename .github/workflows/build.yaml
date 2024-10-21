@@ -8,39 +8,30 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: List files in the repository
-        run: ls ${{ github.workspace }}
       - name: Build docker images
         run: |
-          docker build -t modbus-to-mqtt-${{ github.run_number }} --target base ${{ github.workspace }} --no-cache && \
-          docker build -t modbus-to-mqtt-test-${{ github.run_number }} --target test ${{ github.workspace }} --no-cache 
+          docker build -t modbus-to-mqtt-test --target test ${{ github.workspace }} --no-cache 
       - name: Black syntax test
-        run: docker run modbus-to-mqtt-test-${{ github.run_number }} python3 -m black . --check
+        run: docker run modbus-to-mqtt python3 -m black . --check
       - name: Mypy type test
-        run: docker run modbus-to-mqtt-test-${{ github.run_number }} python3 -m mypy .
-
-      - name: Remove test image
-        run: docker image rm modbus-to-mqtt-test-${{ github.run_number }} --force
-        if: always()
-      - name: Remove image
-        run: docker image rm modbus-to-mqtt-${{ github.run_number }} --force
-        if: github.ref != 'refs/heads/main'
+        run: docker run modbus-to-mqtt python3 -m mypy .
 
   Release-image:
     runs-on: ubuntu-latest
     needs: ["Build-docker-images"]
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: Tag docker image
-        run: docker tag $(docker image ls |grep modbus-to-mqtt-${{ github.run_number }} | awk '{print $3}') github.priv/mlb/modbus-to-mqtt
-      - name: Login to container registry
-        uses: docker/login-action@v2
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: 'Login to GitHub Container Registry'
+        uses: docker/login-action@v1
         with:
-          registry: github.priv
-          username: mlb
-          password: ${{ secrets.CI_TOKEN }}
-      - name: Push docker image to registry
-        run: docker push github.priv/mlb/modbus-to-mqtt
-      - name: Remove images
-        run: docker image rm modbus-to-mqtt-${{ github.run_number }} github.priv/mlb/modbus-to-mqtt --force
-        if: always()
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.TOKEN}}
+
+      - name: 'Build Inventory Image'
+        run: |
+          docker build . --tag ghcr.io/${{github.actor}}/modbus-to-mqtt:latest --target base ${{ github.workspace }}
+          docker push ghcr.io/${{github.actor}}/modbus-to-mqtt:latest
