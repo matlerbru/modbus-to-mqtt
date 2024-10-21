@@ -1,0 +1,46 @@
+name: Gitea Actions Demo
+run-name: ${{ gitea.actor }} is testing out Gitea Actions 🚀
+on: [push]
+
+jobs:
+  Build-docker-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: List files in the repository
+        run: ls ${{ gitea.workspace }}
+      - name: Build docker images
+        run: |
+          docker build -t modbus-to-mqtt-${{ github.run_number }} --target base ${{ gitea.workspace }} --no-cache && \
+          docker build -t modbus-to-mqtt-test-${{ github.run_number }} --target test ${{ gitea.workspace }} --no-cache 
+      - name: Black syntax test
+        run: docker run modbus-to-mqtt-test-${{ github.run_number }} python3 -m black . --check
+      - name: Mypy type test
+        run: docker run modbus-to-mqtt-test-${{ github.run_number }} python3 -m mypy .
+
+      - name: Remove test image
+        run: docker image rm modbus-to-mqtt-test-${{ github.run_number }} --force
+        if: always()
+      - name: Remove image
+        run: docker image rm modbus-to-mqtt-${{ github.run_number }} --force
+        if: gitea.ref != 'refs/heads/master'
+
+  Release-image:
+    runs-on: ubuntu-latest
+    needs: ["Build-docker-images"]
+    if: gitea.ref == 'refs/heads/master'
+    steps:
+      - name: Tag docker image
+        run: docker tag $(docker image ls |grep modbus-to-mqtt-${{ github.run_number }} | awk '{print $3}') gitea.priv/mlb/modbus-to-mqtt
+      - name: Login to container registry
+        uses: docker/login-action@v2
+        with:
+          registry: gitea.priv
+          username: mlb
+          password: ${{ secrets.CI_TOKEN }}
+      - name: Push docker image to registry
+        run: docker push gitea.priv/mlb/modbus-to-mqtt
+      - name: Remove images
+        run: docker image rm modbus-to-mqtt-${{ github.run_number }} gitea.priv/mlb/modbus-to-mqtt --force
+        if: always()
