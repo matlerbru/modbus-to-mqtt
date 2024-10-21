@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Build docker images
         run: |
-          docker build -t modbus-to-mqtt-test --target test ${{ github.workspace }} --no-cache 
+          docker build -t modbus-to-mqtt --target test ${{ github.workspace }} --no-cache 
       - name: Black syntax test
         run: docker run modbus-to-mqtt python3 -m black . --check
       - name: Mypy type test
